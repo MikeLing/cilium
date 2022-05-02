@@ -4,7 +4,6 @@
 package policy
 
 import (
-	"fmt"
 	"io"
 	stdlog "log"
 	"strconv"
@@ -80,17 +79,40 @@ func (s *SearchContext) String() string {
 	}
 	for _, dport := range s.DPorts {
 		if dport.Name != "" {
-			dports = append(dports, fmt.Sprintf("%s/%s", dport.Name, dport.Protocol))
+			var str strings.Builder
+			str.Grow(len(dport.Name) + len(dport.Protocol) + 1)
+			str.WriteString(dport.Name)
+			str.WriteRune('/')
+			str.WriteString(dport.Protocol)
+			dports = append(dports, str.String())
 		} else {
-			dports = append(dports, fmt.Sprintf("%d/%s", dport.Port, dport.Protocol))
+			var str strings.Builder
+			dport_Str := strconv.FormatUint(uint64(dport.Port), 10)
+			str.Grow(len(dport_Str) + len(dport.Protocol) + 1)
+			str.WriteString(dport_Str)
+			str.WriteRune('/')
+			str.WriteString(dport.Protocol)
+			dports = append(dports, str.String())
 		}
 	}
-	ret := fmt.Sprintf("From: [%s]", strings.Join(from, ", "))
-	ret += fmt.Sprintf(" => To: [%s]", strings.Join(to, ", "))
+	from_str := strings.Join(from, ", ")
+	to_str := strings.Join(to, ", ")
+	dport_str := strings.Join(dports, ", ")
+	var ret_str strings.Builder
+	// the length of 'From: [] => To: [] Ports: []' is 28
+	ret_str.Grow(len(from_str) + len(to_str) + len(dport_str) + 28)
+	ret_str.WriteString("From: [")
+	ret_str.WriteString(from_str)
+	ret_str.WriteRune(']')
+	ret_str.WriteString("=> To: [")
+	ret_str.WriteString(to_str)
+	ret_str.WriteRune(']')
 	if len(dports) != 0 {
-		ret += fmt.Sprintf(" Ports: [%s]", strings.Join(dports, ", "))
+		ret_str.WriteString(" Ports: [")
+		ret_str.WriteString(dport_str)
+		ret_str.WriteRune(']')
 	}
-	return ret
+	return ret_str.String()
 }
 
 func (s *SearchContext) CallDepth() string {
