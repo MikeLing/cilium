@@ -77,16 +77,15 @@ func (s *SearchContext) String() string {
 	for _, toLabel := range s.To {
 		to = append(to, toLabel.String())
 	}
+	var str strings.Builder
 	for _, dport := range s.DPorts {
 		if dport.Name != "" {
-			var str strings.Builder
 			str.Grow(len(dport.Name) + len(dport.Protocol) + 1)
 			str.WriteString(dport.Name)
 			str.WriteRune('/')
 			str.WriteString(dport.Protocol)
 			dports = append(dports, str.String())
 		} else {
-			var str strings.Builder
 			dport_Str := strconv.FormatUint(uint64(dport.Port), 10)
 			str.Grow(len(dport_Str) + len(dport.Protocol) + 1)
 			str.WriteString(dport_Str)
