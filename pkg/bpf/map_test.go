@@ -31,7 +31,6 @@ func (s *BPFTestSuite) TestExtractCommonName(c *C) {
 	c.Assert(extractCommonName("cilium_policy"), Equals, "policy")
 	c.Assert(extractCommonName("cilium_policy_1157"), Equals, "policy")
 	c.Assert(extractCommonName("cilium_policy_reserved_1"), Equals, "policy")
-	c.Assert(extractCommonName("cilium_proxy4"), Equals, "proxy4")
 	c.Assert(extractCommonName("cilium_tunnel_map"), Equals, "tunnel_map")
 }
 

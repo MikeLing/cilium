@@ -105,7 +105,6 @@ func bpftoolLoad(bpfObject string, bpfFsFile string) error {
 		"cilium_events",
 		"cilium_sock_ops",
 		"cilium_ep_to_policy",
-		"cilium_proxy4", "cilium_proxy6",
 		"cilium_lb6_reverse_nat", "cilium_lb4_reverse_nat",
 		"cilium_lb6_services", "cilium_lb4_services",
 		"cilium_lb6_rr_seq", "cilium_lb4_seq",
